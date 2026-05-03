@@ -1,41 +1,44 @@
-# Stages mod into ./build, then zips ./build -> ./dist/journal.vmz (POSIX paths in ZIP).
+# Writes dist/journal.vmz with Metro layout: mod.txt at archive root,
+# GDScript under mods/journal/ (matches res:// paths in mod.txt and preloads).
 $ErrorActionPreference = 'Stop'
 
 $root = $PSScriptRoot
-$buildRoot = Join-Path $root 'build'
 $distDir = Join-Path $root 'dist'
 $distZip = Join-Path $distDir 'journal.vmz'
-$srcModsJournal = Join-Path $root 'mods\journal'
+$srcDir = Join-Path $root 'src'
+
+if (-not (Test-Path $srcDir)) {
+    throw "Missing folder: $srcDir"
+}
 
 Add-Type -AssemblyName System.IO.Compression
 Add-Type -AssemblyName System.IO.Compression.FileSystem
-
-if (Test-Path $buildRoot) {
-    Remove-Item -LiteralPath $buildRoot -Recurse -Force
-}
-$null = New-Item -ItemType Directory -Path $buildRoot -Force
-
-Copy-Item -LiteralPath (Join-Path $root 'mod.txt') -Destination (Join-Path $buildRoot 'mod.txt')
-
-$buildMods = Join-Path $buildRoot 'mods'
-$null = New-Item -ItemType Directory -Path $buildMods -Force
-Copy-Item -LiteralPath $srcModsJournal -Destination $buildMods -Recurse -Force
 
 $null = New-Item -ItemType Directory -Path $distDir -Force
 if (Test-Path $distZip) {
     Remove-Item -LiteralPath $distZip -Force
 }
 
-$resolvedBuild = (Resolve-Path $buildRoot).Path
+$modTxt = Join-Path $root 'mod.txt'
+if (-not (Test-Path $modTxt)) {
+    throw "Missing mod.txt at repo root."
+}
+
+$resolvedSrc = ((Resolve-Path $srcDir).Path).TrimEnd('\')
 $zip = [System.IO.Compression.ZipFile]::Open(
     $distZip,
     [System.IO.Compression.ZipArchiveMode]::Create
 )
 try {
-    Get-ChildItem -Path $buildRoot -File -Recurse | ForEach-Object {
-        $relative = $_.FullName.Substring($resolvedBuild.Length).TrimStart('\').Replace('\', '/')
+    [void][System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $modTxt, 'mod.txt')
+
+    Get-ChildItem -Path $srcDir -File -Recurse | ForEach-Object {
+        $rel = $_.FullName.Substring($resolvedSrc.Length).TrimStart('\').Replace('\', '/')
+        $entryName = "mods/journal/$rel"
         [void][System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile(
-            $zip, $_.FullName, $relative
+            $zip,
+            $_.FullName,
+            $entryName
         )
     }
 }

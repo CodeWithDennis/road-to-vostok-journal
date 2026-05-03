@@ -26,15 +26,24 @@ If you use **Mod Configuration Menu**, open **Journal** there.
 
 No MCM? It still works, but you’re stuck with **J** to open/close and you can’t change the pause option from a menu.
 
+## Repo layout
+
+| Path | Role |
+|------|------|
+| **`mod.txt`** | Loader manifest (`res://mods/journal/...` autoload paths). |
+| **`src/`** | GDScript you edit here; **`package.ps1`** packs it as **`mods/journal/`** inside the archive (same paths the game loads). |
+| **`docs/`** | Assets for this readme (e.g. screenshot). |
+| **`dist/`** | Generated **`journal.vmz`** — gitignored. |
+
 ## Building the mod zip
 
-In this folder run:
+From this folder:
 
 ```powershell
 .\package.ps1
 ```
 
-It **copies** `mod.txt` and `mods/journal/` into **`build/`** (so you can see exactly what goes in the pack), then writes **`dist/journal.vmz`**. Those two folders are gitignored.
+Writes **`dist/journal.vmz`** with **`/`** entry names for Metro.
 
 ## Version
 
