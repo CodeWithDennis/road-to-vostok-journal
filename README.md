@@ -34,4 +34,4 @@ It **copies** `mod.txt` and `mods/journal/` into **`build/`** (so you can see ex
 
 ## Version
 
-**0.1.0** (see `mod.txt`).
+**v1.0.0** (see `mod.txt`).
