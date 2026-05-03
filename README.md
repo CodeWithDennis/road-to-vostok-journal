@@ -1,4 +1,4 @@
-# Journal (Road to Vostok mod)
+# Journal [(Road to Vostok mod)](https://modworkshop.net/mod/56551)
 
 Pretty much a **notepad inside the game**. You open it, type stuff, and it **saves on its own** while you write. Looks dark and simple like the rest of the UI.
 
