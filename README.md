@@ -36,9 +36,6 @@ In this folder run:
 
 It **copies** `mod.txt` and `mods/journal/` into **`build/`** (so you can see exactly what goes in the pack), then writes **`dist/journal.vmz`**. Those two folders are gitignored.
 
-To refresh **`docs/screenshot.jpg`** from a new capture (native-resolution crop, no downscale):  
-`.\scripts\export-readme-screenshot.ps1 -Source 'C:\path\to\screenshot.png'`
-
 ## Version
 
 **v1.0.0** (see `mod.txt`).
