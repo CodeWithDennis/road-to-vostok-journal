@@ -4,5 +4,5 @@ id="journal"
 version="1.0.0"
 
 [autoload]
-JournalConfig="res://mods/journal/Config.gd"
-JournalMain="res://mods/journal/Main.gd"
+JournalConfig="res://src/Config.gd"
+JournalMain="res://src/Main.gd"

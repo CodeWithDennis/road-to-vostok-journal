@@ -1,7 +1,7 @@
 extends Node
 
 #region Constants
-const JC := preload("res://mods/journal/JournalConsts.gd")
+const JC := preload("res://src/JournalConsts.gd")
 const SAVE_DIR := "user://JournalMod"
 const SAVE_FILE := "user://JournalMod/journal.json"
 const SAVE_DEBOUNCE_SEC := 0.42

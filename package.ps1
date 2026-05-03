@@ -1,5 +1,5 @@
-# Writes dist/journal.vmz with Metro layout: mod.txt at archive root,
-# GDScript under mods/journal/ (matches res:// paths in mod.txt and preloads).
+# Writes dist/journal.vmz with mod.txt at archive root.
+# Scripts live in ./src/; the archive maps them to src/... so res://src/... matches mod.txt and preloads.
 $ErrorActionPreference = 'Stop'
 
 $root = $PSScriptRoot
@@ -34,7 +34,7 @@ try {
 
     Get-ChildItem -Path $srcDir -File -Recurse | ForEach-Object {
         $rel = $_.FullName.Substring($resolvedSrc.Length).TrimStart('\').Replace('\', '/')
-        $entryName = "mods/journal/$rel"
+        $entryName = "src/$rel"
         [void][System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile(
             $zip,
             $_.FullName,

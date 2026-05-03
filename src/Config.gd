@@ -3,7 +3,7 @@ extends Node
 const MOD_ID := "journal"
 const FILE_PATH := "user://MCM/journal"
 const _MCM_HELPERS := "res://ModConfigurationMenu/Scripts/Doink Oink/MCM_Helpers.tres"
-const JC := preload("res://mods/journal/JournalConsts.gd")
+const JC := preload("res://src/JournalConsts.gd")
 
 var _mcm
 
