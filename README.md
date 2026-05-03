@@ -30,7 +30,7 @@ In this folder run:
 .\package.ps1
 ```
 
-You get **`journal.vmz`** one folder up from here (same place as your other mod packs if you use that layout).
+It **copies** `mod.txt` and `mods/journal/` into **`build/`** (so you can see exactly what goes in the pack), then writes **`dist/journal.vmz`**. Those two folders are gitignored.
 
 ## Version
 
