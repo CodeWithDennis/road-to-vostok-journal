@@ -2,6 +2,10 @@
 
 Pretty much a **notepad inside the game**. You open it, type stuff, and it **saves on its own** while you write. Looks dark and simple like the rest of the UI.
 
+<p align="center">
+  <img src="docs/screenshot.jpg" width="720" alt="Journal open in-game: notes for Day 1 and Day 2" />
+</p>
+
 ## What you can do
 
 - Press a key to **open / close** it (see below). Default is **J**.
@@ -31,6 +35,9 @@ In this folder run:
 ```
 
 It **copies** `mod.txt` and `mods/journal/` into **`build/`** (so you can see exactly what goes in the pack), then writes **`dist/journal.vmz`**. Those two folders are gitignored.
+
+To refresh **`docs/screenshot.jpg`** from a new capture (native-resolution crop, no downscale):  
+`.\scripts\export-readme-screenshot.ps1 -Source 'C:\path\to\screenshot.png'`
 
 ## Version
 
