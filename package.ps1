@@ -1,28 +1,41 @@
-# Builds ../journal.vmz (mod.txt + entire mods/journal/, POSIX paths in ZIP).
+# Stages mod into ./build, then zips ./build -> ./dist/journal.vmz (POSIX paths in ZIP).
 $ErrorActionPreference = 'Stop'
+
 $root = $PSScriptRoot
-$out = Join-Path (Split-Path $root -Parent) 'journal.vmz'
-$modFolder = Join-Path $root 'mods\journal'
+$buildRoot = Join-Path $root 'build'
+$distDir = Join-Path $root 'dist'
+$distZip = Join-Path $distDir 'journal.vmz'
+$srcModsJournal = Join-Path $root 'mods\journal'
 
 Add-Type -AssemblyName System.IO.Compression
 Add-Type -AssemblyName System.IO.Compression.FileSystem
-if (Test-Path $out) {
-    Remove-Item -LiteralPath $out -Force
+
+if (Test-Path $buildRoot) {
+    Remove-Item -LiteralPath $buildRoot -Recurse -Force
+}
+$null = New-Item -ItemType Directory -Path $buildRoot -Force
+
+Copy-Item -LiteralPath (Join-Path $root 'mod.txt') -Destination (Join-Path $buildRoot 'mod.txt')
+
+$buildMods = Join-Path $buildRoot 'mods'
+$null = New-Item -ItemType Directory -Path $buildMods -Force
+Copy-Item -LiteralPath $srcModsJournal -Destination $buildMods -Recurse -Force
+
+$null = New-Item -ItemType Directory -Path $distDir -Force
+if (Test-Path $distZip) {
+    Remove-Item -LiteralPath $distZip -Force
 }
 
+$resolvedBuild = (Resolve-Path $buildRoot).Path
 $zip = [System.IO.Compression.ZipFile]::Open(
-    $out,
+    $distZip,
     [System.IO.Compression.ZipArchiveMode]::Create
 )
 try {
-    $modTxt = Join-Path $root 'mod.txt'
-    [void][System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile(
-        $zip, $modTxt, 'mod.txt'
-    )
-    Get-ChildItem -Path $modFolder -File -Recurse | ForEach-Object {
-        $rel = $_.FullName.Substring($root.Length + 1).Replace('\', '/')
+    Get-ChildItem -Path $buildRoot -File -Recurse | ForEach-Object {
+        $relative = $_.FullName.Substring($resolvedBuild.Length).TrimStart('\').Replace('\', '/')
         [void][System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile(
-            $zip, $_.FullName, $rel
+            $zip, $_.FullName, $relative
         )
     }
 }
@@ -30,4 +43,4 @@ finally {
     $zip.Dispose()
 }
 
-Write-Host "Wrote $out"
+Write-Host "Wrote $distZip"
