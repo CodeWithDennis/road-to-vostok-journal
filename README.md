@@ -26,15 +26,6 @@ If you use **Mod Configuration Menu**, open **Journal** there.
 
 No MCM? It still works, but you’re stuck with **J** to open/close and you can’t change the pause option from a menu.
 
-## Repo layout
-
-| Path | Role |
-|------|------|
-| **`mod.txt`** | Loader manifest (`res://mods/journal/...` autoload paths). |
-| **`src/`** | GDScript you edit here; **`package.ps1`** packs it as **`mods/journal/`** inside the archive (same paths the game loads). |
-| **`docs/`** | Assets for this readme (e.g. screenshot). |
-| **`dist/`** | Generated **`journal.vmz`** — gitignored. |
-
 ## Building the mod zip
 
 From this folder:
